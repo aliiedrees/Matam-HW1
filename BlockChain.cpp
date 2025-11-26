@@ -29,7 +29,7 @@ static int CheckIfContributeToBlock(const BlockChain& blockChain, const string& 
 }
 int BlockChainPersonalBalance(const BlockChain& blockChain, const string& name){
     int balance = 0;
-    BlockChain* current_block = &blockChain;
+    const BlockChain* current_block = &blockChain;
     while(current_block){
         int contribution = CheckIfContributeToBlock(current_block, name);
         if(contribution == SENDER){
