@@ -22,7 +22,7 @@ typedef unsigned int (*updateFunction)(unsigned int);
 struct BlockChain {
         Transaction transaction;
         const string timestamp; //added according to other functions
-        int* prev_transaction;
+        BlockChain* prev_block;
 };
 
 /**
