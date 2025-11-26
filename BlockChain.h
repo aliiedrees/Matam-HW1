@@ -20,7 +20,9 @@ typedef unsigned int (*updateFunction)(unsigned int);
  *
 */
 struct BlockChain {
-    // TODO: Implement 
+        Transaction transaction;
+        const string timestamp; //added according to other functions
+        int* prev_transaction;
 };
 
 /**
