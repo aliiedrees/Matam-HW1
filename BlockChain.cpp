@@ -11,13 +11,32 @@ using std::ifstream;
 using std::ofstream;
 using std::endl;
 
+BlockChain BlockChainInit(){
+    BlockChain block;
+    block.transaction = Transaction();
+    block.timestamp = "";
+    block.prev_block = nullptr;
+
+    return block;
+ }
+
 void BlockChainDestroy(BlockChain& blockChain){
-    BlockChain* currBlock = &blockChain;
+     BlockChain* currBlock = &blockChain;
     while(currBlock){
         BlockChain* toDelete = currBlock;
         currBlock = blockChain.prev_block;
         delete toDelete;
     }
+}
+
+int BlockChainGetSize(BlockChain& blockChain){
+  int size = 0;
+  BlockChain* currentBlock = &blockChain;
+  while(currentBlock){
+    size++;
+    currentBlock = currentBlock->prev_block;
+  }
+  return size;
 }
 
 //helper function to check if person is sender or receiver or none
@@ -43,6 +62,56 @@ int BlockChainPersonalBalance(const BlockChain& blockChain, const string& name){
     }
     return balance;
 }
+void BlockChainAppendTransaction(BlockChain blockchain,Transaction transaction , const string timestamp){
+  BlockChain newblock = BlockChainInit();
+  newblock.transaction = transaction;
+  newblock.timestamp = timestamp;
+  newblock.prev_block = &blockchain;
+}
+
+//missing transactioninit function
+void BlockChainAppendTransaction(BlockChain blockchain,string sender, string receiver , int value , const string timestamp){
+  BlockChain newblock = BlockChainInit();
+  Transaction transaction = TransactionInit(sender, receiver, value, timestamp);
+  newblock.transaction = transaction;
+  newblock.timestamp = timestamp;
+  newblock.prev_block = &blockchain;
+}
+
+void BlockChainDump(BlockChain blockchain,ofstream& file){
+  BlockChain* current_block = &blockchain;
+  int cnt = 1;
+  while(current_block){
+    file << cnt << endl;
+    TransactionDumpInfo(current_block->transaction,file);
+    current_block = current_block->prev_block;
+    cnt++;
+  }
+}
+bool BlockChainVerifyFile(BlockChain blockchain, ifstream& file){
+  BlockChain* current_block = &blockchain;
+  while(current_block && !file.eof()) {
+    Transaction currtransaction = current_block->transaction;
+    string s = getline(file);
+    if(TransactionVerifyHashedMessage(currtransaction, s) != true )
+      return false;
+  }
+  if(file.eof() == true && current_block = nullptr)
+  return true;
+  return false;
+}
+
+BlockChain& BlockChainTransform(BlockChain blockchain ,int (*func)(int)){
+    BlockChain* current_block = &blockchain;
+        while(current_block){
+        Transaction transaction = current_block->transaction;
+        transaction.value = func(transaction.value);
+        current_block->transaction = transaction;
+        current_block = current_block->prev_block;
+    }
+    return blockchain;
+}
+
 
 BlockChain BlockChainLoad(ifstream& file){
     BlockChain blockChain = BlockChainInit();
