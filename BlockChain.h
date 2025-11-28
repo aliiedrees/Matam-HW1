@@ -1,4 +1,3 @@
-BlockChain.h 
 #pragma once
 
 #include <string>
@@ -21,7 +20,7 @@ typedef unsigned int (*updateFunction)(unsigned int);
 */
 struct BlockChain {
         Transaction transaction;
-        const string timestamp; //added according to other functions
+        string timestamp; //added according to other functions
         BlockChain* prev_block;
 };
 
