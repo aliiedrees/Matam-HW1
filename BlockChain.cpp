@@ -63,13 +63,5 @@ BlockChain BlockChainLoad(ifstream& file){
 }
 
 void BlockChainDumpHashed(const BlockChain& blockChain, ofstream& file){
-    const BlockChain* currentBlock = &blockChain;
-    while(currentBlock){
-        string hashedMessage = TransactionHashedMessage(currentBlock->transaction);
-        file << hashedMessage;
-        if(currentBlock->prev_block){
-            file << endl;
-        }
-        currentBlock = currentBlock->prev_block;
-    }
+    
 }
