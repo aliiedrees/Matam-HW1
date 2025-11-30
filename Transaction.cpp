@@ -17,6 +17,20 @@ using std::endl;
  *
  * @param transaction Transaction to print
 */
+Transaction& TransactionInit() {
+    Transaction transaction;
+   unsigned int value = 0;;
+    string sender = "";
+    string receiver = "";
+    return transaction;
+}
+Transaction& TransactionInit(string sender, string receiver , int value) {
+    Transaction transaction = TransactionInit();
+    transaction.sender = sender;
+    transaction.receiver = receiver;
+    transaction.value = value;
+    return transaction;
+}
 void TransactionDumpInfo(const Transaction& transaction, ofstream& file){
     file << "Sender Name: " << transaction.sender << endl;
     file << "Receiver Name: " << transaction.receiver << endl;
