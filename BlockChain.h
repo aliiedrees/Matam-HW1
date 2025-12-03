@@ -27,7 +27,7 @@ struct BlockChain {
 /**
  * @return newly initialized empty BlockChain Object
 */
-BlockChain BlockChainInit();
+BlockChain& BlockChainInit();
 
 /**
  * BlockChainDestory - Destroys an existing BlockChain and deallocates all of its memory, after calling this method, blockChain can't be used/accessed again.
