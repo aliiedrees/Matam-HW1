@@ -115,44 +115,18 @@ void BlockChainDumpHashed(BlockChain blockchain,ofstream& file) {
 }
 bool BlockChainVerifyFile(BlockChain blockchain, ifstream& file){
   BlockChain* current_block = &blockchain;
-<<<<<<< HEAD
-  while(current_block && !file.eof()) {
-    Transaction currtransaction = current_block->transaction;
-    string s = getline(file);
-=======
   while(current_block != nullptr && !file.eof()) {
     Transaction currtransaction = current_block->transaction;
       string s;
     getline(file , s);
->>>>>>> MatamHW1/master
     if(TransactionVerifyHashedMessage(currtransaction, s) != true )
       return false;
       current_block = current_block->prev_block;
   }
-<<<<<<< HEAD
-  if(file.eof() == true && current_block = nullptr)
+  if(file.eof() == true && current_block == nullptr)
   return true;
   return false;
 }
-
-Blockchain& BlockChainTransform(BlockChain blockchain ,int (*func)(int)){
-  BlockChain* current_block = &blockchain;
-while(current_block){
-  Transaction transaction = current_block->transaction;
-  transaction.value = func(transaction.value);
-  current_block->transaction = transaction;
-  current_block = current_block->prev_block;
-}
-return &blockchain;
-}
-
-=======
-  if(file.eof() && current_block == nullptr) {
-      return true;
-  }
-    return false;
-}
->>>>>>> MatamHW1/master
 void BlockChainCompress(BlockChain& blockChain){
     BlockChain* currentBlock = &blockChain;
     BlockChain* blockToMerge = currentBlock->prev_block;

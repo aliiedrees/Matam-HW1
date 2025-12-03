@@ -26,9 +26,16 @@ int main(int argc, char** argv){
 
  // abed
 
-  void opFormat (string source, string target){}
+  void opFormat (ifstream source, ofstream target){
+BlockChain blockchain = BlockChainLoad(source);
+    BlockChainDump(blockchain, target);
+  }
 
- void opCompress (string source, string target){}
+ void opCompress (ifstream source, ofstream target) {
+    BlockChain blockchain = BlockChainLoad(source);
+    BlockChainCompress(blockchain);
+    BlockChainDump(blockchain, target);
+}
 
 
 
