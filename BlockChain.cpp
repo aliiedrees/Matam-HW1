@@ -14,8 +14,8 @@ using std::ofstream;
 using std::endl;
 
 BlockChain& BlockChainInit(){
-    BlockChain* block;
-    block->transaction = Transaction();
+    BlockChain* block = new BlockChain();
+    block->transaction = TransactionInit();
     block->timestamp = "";
     block->prev_block = nullptr;
 
@@ -117,11 +117,12 @@ bool BlockChainVerifyFile(BlockChain blockchain, ifstream& file){
   BlockChain* current_block = &blockchain;
   while(current_block != nullptr && !file.eof()) {
     Transaction currtransaction = current_block->transaction;
-      string s;
+    string s;
     getline(file , s);
-    if(TransactionVerifyHashedMessage(currtransaction, s) != true )
-      return false;
-      current_block = current_block->prev_block;
+    if(TransactionVerifyHashedMessage(currtransaction, s) != true ){
+        return false;
+    }
+    current_block = current_block->prev_block;
   }
   if(file.eof() == true && current_block == nullptr)
   return true;
