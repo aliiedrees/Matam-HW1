@@ -94,8 +94,8 @@ BlockChain BlockChainLoad(ifstream& file){
     }
     return blockChain;
 }
-void BlockChainDump(BlockChain blockchain,ofstream& file){
-  BlockChain* current_block = &blockchain;
+void BlockChainDump(const BlockChain& blockChain,ofstream& file){
+  const BlockChain* current_block = &blockChain;
   int cnt = 1;
   while(current_block){
     file << cnt << endl;
@@ -104,8 +104,8 @@ void BlockChainDump(BlockChain blockchain,ofstream& file){
     cnt++;
   }
 }
-void BlockChainDumpHashed(BlockChain blockchain,ofstream& file) {
-    BlockChain* current_block = &blockchain;
+void BlockChainDumpHashed(const BlockChain& blockChain,ofstream& file) {
+    const BlockChain* current_block = &blockChain;
     while(current_block->prev_block != nullptr) {
         file << TransactionHashedMessage(current_block->transaction) << endl;
         current_block = current_block->prev_block;
@@ -113,9 +113,9 @@ void BlockChainDumpHashed(BlockChain blockchain,ofstream& file) {
     file << TransactionHashedMessage(current_block->transaction);
 
 }
-bool BlockChainVerifyFile(BlockChain blockchain, ifstream& file){
-  BlockChain* current_block = &blockchain;
-  while(current_block != nullptr && !file.eof()) {
+bool BlockChainVerifyFile(const BlockChain& blockChain, ifstream& file){
+   const BlockChain* current_block = &blockChain;
+    while(current_block != nullptr && !file.eof()) {
     Transaction currtransaction = current_block->transaction;
     string s;
     getline(file , s);
