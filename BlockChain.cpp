@@ -13,13 +13,13 @@ using std::ifstream;
 using std::ofstream;
 using std::endl;
 
-BlockChain BlockChainInit(){
-    BlockChain block;
-    block.transaction = Transaction();
-    block.timestamp = "";
-    block.prev_block = nullptr;
+BlockChain& BlockChainInit(){
+    BlockChain* block;
+    block->transaction = Transaction();
+    block->timestamp = "";
+    block->prev_block = nullptr;
 
-    return block;
+    return *block;
  }
 
 void BlockChainDestroy(BlockChain& blockChain){
