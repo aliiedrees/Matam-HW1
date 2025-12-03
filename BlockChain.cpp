@@ -143,25 +143,26 @@ void BlockChainDump(BlockChain blockchain,ofstream& file){
 }
 bool BlockChainVerifyFile(BlockChain blockchain, ifstream& file){
   BlockChain* current_block = &blockchain;
-  while(current_block && !file.eof) {
-    Transiction currtransaction = current_block->transaction;
+  while(current_block && !file.eof()) {
+    Transaction currtransaction = current_block->transaction;
     string s = getline(file);
     if(TransactionVerifyHashedMessage(currtransaction, s) != true )
       return false;
   }
-  if(file.eof == true && current_block = nullptr)
+  if(file.eof() == true && current_block = nullptr)
   return true;
   return false;
 }
+
 Blockchain& BlockChainTransform(BlockChain blockchain ,int (*func)(int)){
   BlockChain* current_block = &blockchain;
 while(current_block){
   Transaction transaction = current_block->transaction;
   transaction.value = func(transaction.value);
-  current_block->transiction = transaction;
+  current_block->transaction = transaction;
   current_block = current_block->prev_block;
 }
-return blockchain;
+return &blockchain;
 }
 
 void BlockChainCompress(BlockChain& blockChain){
