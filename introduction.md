@@ -23,8 +23,8 @@ Tell us a bit about yourselves!
 	- Desirable grade in Matam: 100+
 	- which TA's song you liked the most: Kareem's one
 
-	- Second student's name:
-	- Favorite singer:
-	- Favorite song:
-	- Desirable grade in Matam:
-	- which TA's song you liked the most: 
+	- Second student's name: abdelhadi kiwan
+	- Favorite singer: eminem
+	- Favorite song:superman
+	- Desirable grade in Matam:90
+	- which TA's song you liked the most: numb - regev 
