@@ -80,26 +80,33 @@ void BlockChainAppendTransaction(BlockChain blockchain,string sender, string rec
 BlockChain BlockChainLoad(ifstream& file){
     BlockChain blockChain = BlockChainInit();
     BlockChain* currBlock = &blockChain;
-
-    while (!file.eof()){
-        Transaction transaction;
-        file >> transaction.sender;
-        file >> transaction.receiver;
-        file >> transaction.value;
+    string sender, receiver;
+    int value;
+    if(!file.eof()){
+        file >> sender >> receiver >> value;
+        Transaction transaction = TransactionInit(sender, receiver, value);
         currBlock->transaction = transaction;
         file >> currBlock->timestamp;
-        BlockChain head = BlockChainInit();
+    }
+    while (!file.eof()){
+        BlockChain& head = BlockChainInit();
         currBlock->prev_block = &head;
         currBlock = &head;
+        file >> sender >> receiver >> value;
+        Transaction transaction = TransactionInit(sender, receiver, value);
+        currBlock->transaction = transaction;
+        file >> currBlock->timestamp;
     }
     return blockChain;
 }
 void BlockChainDump(const BlockChain& blockChain,ofstream& file){
   const BlockChain* current_block = &blockChain;
   int cnt = 1;
+  file << "BlockChain Info:" << endl;
   while(current_block){
-    file << cnt << endl;
+    file << cnt << "." <<endl;
     TransactionDumpInfo(current_block->transaction,file);
+    file << "Transaction timestamp: " << current_block->timestamp << endl;
     current_block = current_block->prev_block;
     cnt++;
   }
@@ -119,13 +126,14 @@ bool BlockChainVerifyFile(const BlockChain& blockChain, ifstream& file){
     Transaction currtransaction = current_block->transaction;
     string s;
     getline(file , s);
-    if(TransactionVerifyHashedMessage(currtransaction, s) != true ){
+    if(!TransactionVerifyHashedMessage(currtransaction, s)){
         return false;
     }
     current_block = current_block->prev_block;
-  }
-  if(file.eof() == true && current_block == nullptr)
-  return true;
+    }
+    if(file.eof() == true && current_block == nullptr){
+        return true;
+    }
   return false;
 }
 void BlockChainCompress(BlockChain& blockChain){
