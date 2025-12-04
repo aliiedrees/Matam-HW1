@@ -19,7 +19,7 @@ using std::endl;
 */
 Transaction& TransactionInit() {
     Transaction* transaction = new Transaction();
-    transaction->value = 0;;
+    transaction->value = 0;
     transaction->sender = "";
     transaction->receiver = "";
     return *transaction;
@@ -37,13 +37,6 @@ void TransactionDumpInfo(const Transaction& transaction, ofstream& file){
     file << "Transaction Value: " << transaction.value << endl;
 }
 
-/**
- * TransactionHashMessage - Hashs the message of the transaction
- *
- * @param transaction Transaction to hash
- *
- * @return The hashed message
-*/
 string TransactionHashedMessage(const Transaction& transaction){
     int key = transaction.value;
     string sender = transaction.sender;
@@ -51,21 +44,12 @@ string TransactionHashedMessage(const Transaction& transaction){
     return hash(key, sender, receiver);
 }
 
-/**
- * TransactionVerifyHashedMessage - Verifies that a given transaction suits a given hashed message
- *
- * @param transaction Given transaction
- * @param hashedMessage Hashed message to verify
- *
- * @return true if the message given is suitable to this transaction, false otherwise
- *
-*/
 bool TransactionVerifyHashedMessage(
         const Transaction& transaction,
         string hashedMessage
 ){
-    string hashed1 = TransactionHashedMessage(transaction);
-    if(hashed1 == hashedMessage){
+    string hashed = TransactionHashedMessage(transaction);
+    if(hashed == hashedMessage){
         return true;
     } else {
         return false;
