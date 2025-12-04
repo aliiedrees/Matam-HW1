@@ -4,3 +4,6 @@ CMakeLists.txt
 build/
 cmake-build-debug/*
 .vscode/*
+mtm_blockchain
+tests/*
+verify.out
