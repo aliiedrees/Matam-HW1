@@ -16,8 +16,7 @@ using std::cerr;
 
 int main(int argc, char** argv){
     if(argc != 4){
-       // getErrorMessage();
-       cout << "123";
+        getErrorMessage();
         return 1;
     }
     string op = argv[1];
@@ -37,7 +36,6 @@ int main(int argc, char** argv){
         ifstream targetFile(target);
         opVerify(sourceFile, targetFile);
     }else{
-        cout << op;
         getErrorMessage();
         return 1;
     }
@@ -49,7 +47,7 @@ void opHash (ifstream& source, ofstream& target){
     BlockChainDumpHashed(block, target);
 }
 
- void opVerify (ifstream& source, ifstream& target){
+void opVerify (ifstream& source, ifstream& target){
     BlockChain block = BlockChainLoad(source);
     bool result = BlockChainVerifyFile(block, target);
     if(result){
@@ -57,7 +55,7 @@ void opHash (ifstream& source, ofstream& target){
     } else {
         cout << "Verification failed" << endl;
     }
- }
+}
 
 
 
