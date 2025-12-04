@@ -65,5 +65,9 @@ bool TransactionVerifyHashedMessage(
         string hashedMessage
 ){
     string hashed1 = TransactionHashedMessage(transaction);
-    return (hashed1 == hashedMessage);
+    if(hashed1 == hashedMessage){
+        return true;
+    } else {
+        return false;
+    }
 }
