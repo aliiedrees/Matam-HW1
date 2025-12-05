@@ -16,7 +16,7 @@ using std::cerr;
 
 int main(int argc, char** argv){
     if(argc != 4){
-        getErrorMessage();
+        cout << getErrorMessage() << endl;
         return 1;
     }
     string op = argv[1];
@@ -36,7 +36,7 @@ int main(int argc, char** argv){
         ifstream targetFile(target);
         opVerify(sourceFile, targetFile);
     }else{
-        getErrorMessage();
+        cout << getErrorMessage() << endl;
         return 1;
     }
     return 0;
@@ -45,6 +45,9 @@ int main(int argc, char** argv){
 void opHash (ifstream& source, ofstream& target){
     BlockChain block = BlockChainLoad(source);
     BlockChainDumpHashed(block, target);
+    if(block.prevBlock != nullptr){
+        BlockChainDestroy(*block.prevBlock);
+    }
 }
 
 void opVerify (ifstream& source, ifstream& target){
@@ -55,6 +58,9 @@ void opVerify (ifstream& source, ifstream& target){
     } else {
         cout << "Verification failed" << endl;
     }
+    if(block.prevBlock != nullptr){
+        BlockChainDestroy(*block.prevBlock);
+    }
 }
 
 
@@ -62,14 +68,20 @@ void opVerify (ifstream& source, ifstream& target){
  // abed
 
 void opFormat (ifstream& source, ofstream& target){
-    BlockChain blockchain = BlockChainLoad(source);
-    BlockChainDump(blockchain, target);
+    BlockChain block = BlockChainLoad(source);
+    BlockChainDump(block, target);
+    if(block.prevBlock != nullptr){
+        BlockChainDestroy(*block.prevBlock);
+    }
 }
 
 void opCompress (ifstream& source, ofstream& target) {
-    BlockChain blockchain = BlockChainLoad(source);
-    BlockChainCompress(blockchain);
-    BlockChainDump(blockchain, target);
+    BlockChain block = BlockChainLoad(source);
+    BlockChainCompress(block);
+    BlockChainDump(block, target);
+    if(block.prevBlock != nullptr){
+        BlockChainDestroy(*block.prevBlock);
+    }
 }
 
 

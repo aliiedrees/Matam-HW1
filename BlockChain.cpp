@@ -15,18 +15,20 @@ using std::endl;
 
 BlockChain& BlockChainInit(){
     BlockChain* block = new BlockChain();
-    block->transaction = TransactionInit();
+    Transaction& t = TransactionInit();
+    block->transaction = t;
     block->timestamp = "";
     block->prevBlock = nullptr;
 
+    delete &t;
     return *block;
 }
 
 void BlockChainDestroy(BlockChain& blockChain){
     BlockChain* currBlock = &blockChain;
-    while(currBlock){
+    while(currBlock != nullptr){
         BlockChain* toDelete = currBlock;
-        currBlock = blockChain.prevBlock;
+        currBlock = currBlock->prevBlock;
         delete toDelete;
     }
 }
@@ -69,7 +71,8 @@ int BlockChainPersonalBalance(const BlockChain& blockChain, const string& name){
 void BlockChainAppendTransaction(
     BlockChain& blockChain,
     const Transaction& transaction,
-    const string& timestamp){
+    const string& timestamp
+){
     BlockChain newBlock = BlockChainInit();
     newBlock.transaction = transaction;
     newBlock.timestamp = timestamp;
@@ -81,7 +84,8 @@ void BlockChainAppendTransaction(
     unsigned int value,
     const string& sender,
     const string& receiver,
-    const string& timestamp){
+    const string& timestamp
+){
     BlockChain newBlock = BlockChainInit();
     Transaction transaction = TransactionInit(sender, receiver, value);
     newBlock.transaction = transaction;
@@ -90,26 +94,41 @@ void BlockChainAppendTransaction(
 }
 
 BlockChain BlockChainLoad(ifstream& file){
-    BlockChain blockChain = BlockChainInit();
-    BlockChain* currBlock = &blockChain;
-    string sender, receiver;
+    BlockChain* currBlock = nullptr;
+    BlockChain* head = nullptr;
+    string sender, receiver, timestamp;
     int value;
-    if(!file.eof()){
-        file >> sender >> receiver >> value;
-        Transaction transaction = TransactionInit(sender, receiver, value);
-        currBlock->transaction = transaction;
-        file >> currBlock->timestamp;
+    while(file >> sender >> receiver >> value >> timestamp){
+        BlockChain& blockRef = BlockChainInit();
+        BlockChain* block = &blockRef;
+        
+        Transaction& tRef = TransactionInit(sender, receiver, value);
+        block->transaction = tRef;
+        delete &tRef;
+
+        block->timestamp = timestamp;
+
+        if (head == nullptr){
+            head = block;
+            currBlock = block;
+        } else {
+            currBlock -> prevBlock = block;
+            currBlock = block;
+        }
     }
-    while (!file.eof()){
-        BlockChain& head = BlockChainInit();
-        currBlock->prevBlock = &head;
-        currBlock = &head;
-        file >> sender >> receiver >> value;
-        Transaction transaction = TransactionInit(sender, receiver, value);
-        currBlock->transaction = transaction;
-        file >> currBlock->timestamp;
+
+    if(head == nullptr){
+        BlockChain& blockRef = BlockChainInit();
+        BlockChain block = blockRef;
+        delete &blockRef;
+        return block;
     }
-    return blockChain;
+
+    BlockChain returnBlock = *head;
+    head->prevBlock = nullptr;
+    delete head;
+
+    return returnBlock;
 }
 
 void BlockChainDump(const BlockChain& blockChain,ofstream& file){
