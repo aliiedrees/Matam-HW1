@@ -23,16 +23,16 @@ int main(int argc, char** argv){
     string source = argv[2];
     string target = argv[3];
     ifstream sourceFile(source);
-    ofstream targetFile(target);
     if(op == "format"){
+        ofstream targetFile(target);
         opFormat(sourceFile, targetFile);
     }else if(op == "hash"){
+        ofstream targetFile(target);
         opHash(sourceFile, targetFile);
     } else if (op == "compress"){
+        ofstream targetFile(target);
         opCompress(sourceFile, targetFile);
-        return 0;
     } else if(op == "verify"){
-        targetFile.close();
         ifstream targetFile(target);
         opVerify(sourceFile, targetFile);
     }else{
@@ -51,6 +51,11 @@ void opHash (ifstream& source, ofstream& target){
 }
 
 void opVerify (ifstream& source, ifstream& target){
+
+    target.clear();              // Clear any error flags (like EOF)
+    target.seekg(0, std::ios::beg); // Move cursor back to the start
+
+    
     BlockChain block = BlockChainLoad(source);
     bool result = BlockChainVerifyFile(block, target);
     if(result == true){
