@@ -53,7 +53,7 @@ void opHash (ifstream& source, ofstream& target){
 void opVerify (ifstream& source, ifstream& target){
     BlockChain block = BlockChainLoad(source);
     bool result = BlockChainVerifyFile(block, target);
-    if(result){
+    if(result == true){
         cout << "Verification passed" << endl;
     } else {
         cout << "Verification failed" << endl;
