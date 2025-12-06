@@ -20,11 +20,11 @@ Tell us a bit about yourselves!
 	- First student's name:Ali Edrees 
 	- Favorite singer:Um Kalthom
 	- Favorite song: Serat Al hob
-	- Desirable grade in Matam: 100+
+	- Desirable grade in Matam: 100
 	- which TA's song you liked the most: Kareem's one
 
 	- Second student's name: abdelhadi kiwan
 	- Favorite singer: eminem
-	- Favorite song:superman
-	- Desirable grade in Matam:90
+	- Favorite song: mockingbird
+	- Desirable grade in Matam:95
 	- which TA's song you liked the most: numb - regev 
