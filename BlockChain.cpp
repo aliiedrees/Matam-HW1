@@ -33,9 +33,9 @@ void BlockChainDestroy(BlockChain& blockChain){
     }
 }
 
-int BlockChainGetSize(BlockChain& blockChain){
+int BlockChainGetSize(const BlockChain& blockChain){
     int size = 0;
-    BlockChain* currentBlock = &blockChain;
+    const BlockChain* currentBlock = &blockChain;
     while(currentBlock){
         size++;
         currentBlock = currentBlock->prevBlock;
@@ -155,16 +155,19 @@ void BlockChainDumpHashed(const BlockChain& blockChain,ofstream& file) {
 
 bool BlockChainVerifyFile(const BlockChain& blockChain, ifstream& file){
     const BlockChain* currentBlock = &blockChain;
-    while(currentBlock != nullptr && !file.eof()) {
-        Transaction currTransaction = currentBlock->transaction;
-        string s;
-        getline(file , s);
-        if(!TransactionVerifyHashedMessage(currTransaction, s)){
+    string line;
+    int size = BlockChainGetSize(blockChain);
+    while(file >> line){
+        if(size <= 0) {
+            return false;
+        }
+        if(!TransactionVerifyHashedMessage(currentBlock->transaction, line)){
             return false;
         }
         currentBlock = currentBlock->prevBlock;
+        size--;
     }
-    if(file.eof() == true && currentBlock == nullptr){
+    if(size == 0){
         return true;
     }
     return false;
