@@ -12,15 +12,29 @@ using std::string;
 using std::ifstream;
 using std::ofstream;
 using std::endl;
+using std::cout;
 
+static Transaction TransactionInit() {
+    Transaction transaction;
+    transaction.value = 0;
+    transaction.sender = "";
+    transaction.receiver = "";
+    return transaction;
+}
+static Transaction TransactionInit(string sender, string receiver , int value) {
+    Transaction transaction;
+    transaction.sender = sender;
+    transaction.receiver = receiver;
+    transaction.value = value;
+    return transaction;
+}
 BlockChain& BlockChainInit(){
     BlockChain* block = new BlockChain();
-    Transaction& t = TransactionInit();
+    Transaction t = TransactionInit();
     block->transaction = t;
     block->timestamp = "";
     block->prevBlock = nullptr;
 
-    delete &t;
     return *block;
 }
 
@@ -102,10 +116,8 @@ BlockChain BlockChainLoad(ifstream& file){
         BlockChain& blockRef = BlockChainInit();
         BlockChain* block = &blockRef;
         
-        Transaction& tRef = TransactionInit(sender, receiver, value);
-        block->transaction = tRef;
-        delete &tRef;
-
+        Transaction t = TransactionInit(sender, receiver, value);
+        block->transaction = t;
         block->timestamp = timestamp;
 
         if (head == nullptr){
@@ -153,24 +165,30 @@ void BlockChainDumpHashed(const BlockChain& blockChain,ofstream& file) {
     file << TransactionHashedMessage(currentBlock->transaction);
 }
 
-bool BlockChainVerifyFile(const BlockChain& blockChain, ifstream& file){
+bool BlockChainVerifyFile(const BlockChain& blockChain, std::ifstream& file) {
     const BlockChain* currentBlock = &blockChain;
-    string line;
-    int size = BlockChainGetSize(blockChain);
-    while(file >> line){
-        if(size <= 0) {
+    string fileHash;
+
+    while (file >> fileHash) {
+        
+        if (currentBlock == nullptr) {
             return false;
         }
-        if(!TransactionVerifyHashedMessage(currentBlock->transaction, line)){
+
+        string actualHash = TransactionHashedMessage(currentBlock->transaction);
+
+        if (fileHash != actualHash) {
             return false;
         }
+
         currentBlock = currentBlock->prevBlock;
-        size--;
     }
-    if(size == 0){
-        return true;
+
+    if (currentBlock != nullptr) {
+        return false;
     }
-    return false;
+
+    return true;
 }
 
 void BlockChainCompress(BlockChain& blockChain){

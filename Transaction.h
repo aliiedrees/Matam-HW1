@@ -19,8 +19,6 @@ struct Transaction {
     string receiver;
 };
 
-Transaction& TransactionInit(string sender, string receiver , int value);
-Transaction& TransactionInit();
 /**
  * TransactionDumpInfo - Prints the data of the transaction to a given file
  *
