@@ -17,11 +17,11 @@ To make things a bit more fun, each TA added a link to song/video we would like 
 
 Tell us a bit about yourselves! 
 
-	- First student's name:
-	- Favorite singer:
-	- Favorite song:
-	- Desirable grade in Matam:
-	- which TA's song you liked the most:
+	- First student's name:Ali Edrees
+	- Favorite singer:Um Kalthom
+	- Favorite song:Serat Al hob
+	- Desirable grade in Matam:100+
+	- which TA's song you liked the most: Kareem's one
 
 	- Second student's name:abdelhadi kiwan
 	- Favorite singer:eminem
